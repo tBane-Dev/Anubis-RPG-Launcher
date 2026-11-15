@@ -1,0 +1,32 @@
+#pragma once
+#include "Objects/PlacedGameObject.hpp"
+#include "Modules/Game/Map/Path.hpp"
+
+enum class MonsterState { Idle, Moving, Attacking };
+enum class Direction { Down, Left, Right, Up };
+
+class MonsterPrefab : public GameObject {
+public:
+	int _stepSize;
+
+	MonsterPrefab(std::wstring name, sf::Vector2i origin, int stepSize, std::shared_ptr<Collider> collider, std::shared_ptr<Mesh> mesh, std::weak_ptr<Anubis::Model3D> model);
+	~MonsterPrefab();
+};
+
+class Monster : public PlacedGameObject {
+public:
+
+	MonsterState _state;
+	sf::Vector2f _basePosition;
+	Direction _direction;
+
+	std::shared_ptr<Game::Path> _path;
+
+	Monster(std::weak_ptr<GameObject> prefab);
+	~Monster();
+
+	virtual sf::Vector2f getPosition();
+	virtual void setPosition(sf::Vector2f position);
+
+	virtual void update();
+};
