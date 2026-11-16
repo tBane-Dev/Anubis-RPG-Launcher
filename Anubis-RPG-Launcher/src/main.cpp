@@ -16,7 +16,6 @@
 #include "TexturesManager.hpp"
 #include "ModelsManager.hpp"
 #include "ShadersManager.hpp"
-#include "Tileset.hpp"
 #include "Wallset.hpp"
 #include "PrefabsManager.hpp"
 #include "GUIManager.hpp"
@@ -119,7 +118,6 @@ int main() {
     Anubis::GUI_manager = std::make_shared<Anubis::GUIManager>();
     Main::modules_manager = std::make_shared<Main::ModulesManager>();
 
-	tileset = std::make_shared<Tileset>();
 	wallset = std::make_shared<Wallset>();
 
     Anubis::renderIntro();

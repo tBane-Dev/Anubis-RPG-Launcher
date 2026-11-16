@@ -37,12 +37,12 @@ namespace Game {
 				sf::Vector2f oldPosition = sf::Vector2f(_position);
 
 				if (ms->delta > 0) {
-					if (_zoom < 2.0f)
+					if (_zoom < 4.0f)
 						_zoom += 0.25f;
 				}
 
 				if (ms->delta < 0) {
-					if (_zoom > 0.25f)
+					if (_zoom > 0.5f)
 						_zoom -= 0.25f;
 				}
 

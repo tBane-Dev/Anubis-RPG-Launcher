@@ -9,28 +9,33 @@ namespace Game {
 	class Map : public Anubis::Element {
 	public:
 
-		std::shared_ptr<Texture> _texture;
+		std::shared_ptr<Texture> _texture;			// tileset.png - 8 terrains in one column
 		std::vector<std::shared_ptr<Chunk>> _chunks;
 		std::vector<std::shared_ptr<Chunk>> _visibleChunks;
 
 		Map();
 		~Map();
 
-		void addChunk(std::shared_ptr<Chunk> chunk, int tileType);
+		void addChunk(std::shared_ptr<Chunk> chunk, int terrain);
 		void create(int width, int height);
 
 		std::shared_ptr<Chunk> getChunkByCoords(int x, int y);
 		std::shared_ptr<Chunk> getChunkByTileGlobalCoords(int x, int y);
 		std::shared_ptr<Chunk> getChunkByGlobalPosition();
 		std::shared_ptr<Chunk> getChunkByGlobalPosition(sf::Vector2i position);
-		std::shared_ptr<Tile> getTileByTileGlobalCoords(int x, int y);
 		sf::IntRect getRect();
+
+		// SMOOTH TERRAIN
+		void stitchChunk(std::shared_ptr<Chunk> chunk);
+		void convertOldTiles();
 
 		void setVisibleChunks();
 
+		// Point of the terrain surface under a window pixel. Works for any terrain heights:
+		// only the terrain is drawn into the scene's picking depth buffer and the depth is unprojected.
 		bool pickTerrain(sf::Vector2i pixel, sf::Vector3f& hit);
-		void drawTileOverlay(sf::Vector2i firstTile, sf::Vector2i size, const std::vector<float>& mask, sf::Color color);
 
+		// Terrain height at a map point (0 outside the map).
 		float getHeight(float x, float z);
 
 		void saveFromProject(std::ofstream& file);
@@ -41,32 +46,5 @@ namespace Game {
 		void update();
 		void draw();
 	};
-
-	int getNeighbourTypeLocal(
-		int nx, int ny,
-		const std::shared_ptr<Chunk>& chunk,
-		const std::shared_ptr<Chunk>& leftTopChunk,
-		const std::shared_ptr<Chunk>& topChunk,
-		const std::shared_ptr<Chunk>& rightTopChunk,
-		const std::shared_ptr<Chunk>& leftChunk,
-		const std::shared_ptr<Chunk>& rightChunk,
-		const std::shared_ptr<Chunk>& leftBottomChunk,
-		const std::shared_ptr<Chunk>& bottomChunk,
-		const std::shared_ptr<Chunk>& rightBottomChunk
-	);
-
-	int getTileType(
-		int type,
-		int x, int y,
-		std::shared_ptr<Chunk> chunk,
-		std::shared_ptr<Chunk> leftTopChunk,
-		std::shared_ptr<Chunk> topChunk,
-		std::shared_ptr<Chunk> rightTopChunk,
-		std::shared_ptr<Chunk> leftChunk,
-		std::shared_ptr<Chunk> rightChunk,
-		std::shared_ptr<Chunk> leftBottomChunk,
-		std::shared_ptr<Chunk> bottomChunk,
-		std::shared_ptr<Chunk> rightBottomChunk
-	);
 
 }
