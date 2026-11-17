@@ -611,9 +611,6 @@ namespace Game {
 
 		// SFML draws editor overlays using the same captured 3D matrices.
 		Anubis::render_window->resetGLStates();
-
-		Anubis::shaders_manager->ghost_chunk_shader->setUniform("uView", sf::Glsl::Mat4(viewMatrix));
-		Anubis::shaders_manager->ghost_chunk_shader->setUniform("uProjection", sf::Glsl::Mat4(projectionMatrix));
 	}
 
 }

@@ -28,7 +28,6 @@ namespace Game {
 		std::vector<std::shared_ptr<sf::Texture>> _splatTextures;	// [0] = weights of terrains 0-3, [1] = terrains 4-7
 
 		bool _isVisible;
-		std::unique_ptr<sf::Text> _coordsText;
 
 		std::vector<std::shared_ptr<PlacedGameObject>> _gameObjectsOnMap;
 		sf::IntRect _gameObjectsOnMapRect;
@@ -60,7 +59,6 @@ namespace Game {
 
 		void setVisible();
 
-		void drawCoords();
 		void draw();
 	};
 

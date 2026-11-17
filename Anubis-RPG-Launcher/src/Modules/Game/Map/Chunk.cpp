@@ -23,11 +23,6 @@ namespace Game {
 		_gameObjectsOnMap.clear();
 		_gameObjectsOnMapRect = getRect();
 
-		std::wstring text = std::to_wstring(_coords.x) + L"x" + std::to_wstring(_coords.y);
-		
-		_coordsText = std::make_unique<sf::Text>(basicFont, text, 24);
-		_coordsText->setFillColor(basic_text_color);
-
 		fill(2, 0.f);
 	}
 
@@ -319,20 +314,6 @@ namespace Game {
 				Game::module->_game_objects->addGameObject(placedGameObject);
 			};
 		}
-	}
-
-	void Chunk::drawCoords() {
-		float padding = 8.f;
-
-		sf::Vector2f position(_coords.x * tilesCols * Tile::tileSize + padding, _coords.y * tilesRows * Tile::tileSize + padding);
-
-		_coordsText->setPosition(sf::Vector2f(0.f, 0.f));
-		Anubis::shaders_manager->ghost_chunk_shader->setUniform("position", position);
-
-		sf::RenderStates states;
-		states.shader = &*Anubis::shaders_manager->ghost_chunk_shader;
-
-		Anubis::render_window->draw(*_coordsText, states);
 	}
 
 	void Chunk::draw() {

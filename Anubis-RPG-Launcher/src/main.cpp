@@ -16,7 +16,6 @@
 #include "TexturesManager.hpp"
 #include "ModelsManager.hpp"
 #include "ShadersManager.hpp"
-#include "Wallset.hpp"
 #include "PrefabsManager.hpp"
 #include "GUIManager.hpp"
 #include "Cursor.hpp"
@@ -118,8 +117,6 @@ int main() {
     Anubis::GUI_manager = std::make_shared<Anubis::GUIManager>();
     Main::modules_manager = std::make_shared<Main::ModulesManager>();
 
-	wallset = std::make_shared<Wallset>();
-
     Anubis::renderIntro();
 
     Game::module = std::make_shared<Game::Module>();
@@ -130,11 +127,12 @@ int main() {
     Game::module->createGameObjects();
     Game::module->createCamera();
     Game::module->createCursorOnMap();
-
-
+    
     // cursor
     Anubis::cursor = std::make_shared<Anubis::Cursor>();
     Anubis::cursor->setScene(Game::module->_scene);
+
+    Game::module->setVisibleChunks();
 
     // load the test-map
     const std::filesystem::path path = L"world.anubis";
@@ -152,8 +150,8 @@ int main() {
                 Anubis::prefabs_manager->loadFromProject(file, loader);
                 Game::module->_map->loadFromProject(file, loader);
                 Game::module->_game_objects->loadFromProject(file, loader);
-                
                 loader->end();
+                Game::module->setVisibleChunks();
             }
 
             
