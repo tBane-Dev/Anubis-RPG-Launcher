@@ -61,14 +61,4 @@ namespace Game {
 		void draw();
 	};
 
-	// Terrain of one chunk before and after a brush stroke (undo / redo).
-	class TerrainSnapshot {
-	public:
-		std::shared_ptr<Chunk> _chunk;
-		std::vector<float> _oldHeights;
-		std::vector<float> _newHeights;
-		std::vector<std::uint8_t> _oldWeights;
-		std::vector<std::uint8_t> _newWeights;
-	};
-
 }
