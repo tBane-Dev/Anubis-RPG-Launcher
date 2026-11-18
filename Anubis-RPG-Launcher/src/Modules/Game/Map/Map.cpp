@@ -322,6 +322,61 @@ namespace Game {
 		}
 	}
 
+	void Map::drawWaters(sf::Glsl::Mat4 view, sf::Glsl::Mat4 projection) {
+
+		std::shared_ptr<Game::Module> map_editor = Game::module;
+		std::shared_ptr<sf::Shader> shader = Anubis::shaders_manager->water3D_shader;
+
+		if (_waters.empty() || !shader || shader->getNativeHandle() == 0)
+			return;
+
+		std::shared_ptr<Texture> noise = textures_manager->getTexture(L"assets\\tex\\noise.png");
+
+		if (!noise || !noise->_texture)
+			return;
+
+		noise->_texture->setRepeated(true);
+		noise->_texture->setSmooth(true);
+
+		sf::Vector2u windowSize = Anubis::render_window->getSize();
+
+		shader->setUniform("uView", view);
+		shader->setUniform("uProjection", projection);
+		shader->setUniform("uNoise", 0);
+		shader->setUniform("uShadowMap", 1);
+		shader->setUniform("uMask", 2);
+		shader->setUniform("uLightViewProjection", sf::Glsl::Mat4(map_editor->_scene->_lightViewProjection.data()));
+		shader->setUniform("uShadowStrength", 0.45f);
+		shader->setUniform("uShadowSamples", map_editor->_scene->_shadowSamples);
+		shader->setUniform("uShoreWidth", 12.f);
+		shader->setUniform("time", Anubis::currentTime.asSeconds());
+		shader->setUniform("resolution", sf::Vector2f(windowSize));
+		shader->setUniform("startPos", sf::Vector2f(0.f, 0.f));
+
+		// transparent: tested with the terrain depth, but does not write it
+		glEnable(GL_DEPTH_TEST);
+		glDepthFunc(GL_LEQUAL);
+		glDepthMask(GL_FALSE);
+		glDisable(GL_CULL_FACE);
+		glEnable(GL_BLEND);
+		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
+		Anubis::GL::activeTexture(0x84C1); // GL_TEXTURE1
+		glBindTexture(GL_TEXTURE_2D, map_editor->_scene->_shadowDepth);
+		Anubis::GL::activeTexture(0x84C0); // GL_TEXTURE0
+		glBindTexture(GL_TEXTURE_2D, noise->_texture->getNativeHandle());
+
+		for (auto& water : _waters)
+			water->draw();
+
+		Anubis::GL::bindVertexArray(0);
+		sf::Shader::bind(nullptr);
+
+		glDepthMask(GL_TRUE);
+		glDisable(GL_BLEND);
+	}
+
+
 	void Map::saveFromProject(std::ofstream& file) {
 		BinaryWriter writer(file);
 
@@ -347,6 +402,7 @@ namespace Game {
 		// clear all
 		_visibleChunks.clear();
 		_chunks.clear();
+		_waters.clear();
 		Game::module->_game_objects->_visiblePlacedGameObjects.clear();
 
 		int chunksCount = loader->counts.chunksCount;
@@ -596,6 +652,10 @@ namespace Game {
 
 		Anubis::GL::bindVertexArray(0);
 		sf::Shader::bind(nullptr);
+
+		// waters after the terrain - they use its depth (shore line)
+		drawWaters(sf::Glsl::Mat4(viewMatrix), sf::Glsl::Mat4(projectionMatrix));
+
 		glBindTexture(GL_TEXTURE_2D, 0);
 
 		Anubis::GL::activeTexture(0x84C1); // GL_TEXTURE1
