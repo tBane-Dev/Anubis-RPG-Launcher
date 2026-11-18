@@ -5,6 +5,7 @@ namespace Anubis {
 	class ShadersManager {
 	public:
 		std::shared_ptr<sf::Shader> terrain3D_shader;
+		std::shared_ptr<sf::Shader> water3D_shader;
 
 		ShadersManager();
 		~ShadersManager();
