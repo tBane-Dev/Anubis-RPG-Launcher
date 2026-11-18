@@ -29,7 +29,6 @@ namespace Game {
 
 		// SMOOTH TERRAIN
 		void stitchChunk(std::shared_ptr<Chunk> chunk);
-		void convertOldTiles();
 
 		void setVisibleChunks();
 

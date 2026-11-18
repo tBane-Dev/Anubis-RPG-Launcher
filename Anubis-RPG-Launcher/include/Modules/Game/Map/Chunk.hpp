@@ -23,7 +23,6 @@ namespace Game {
 		sf::Vector2i _coords;
 		std::vector<float> _heights;			// heightsCols * heightsCols
 		std::vector<std::uint8_t> _weights;		// weightsCols * weightsCols * terrainsCount, sum of one point = 255
-		std::vector<int> _oldTiles;				// only while loading an old (tile) map
 		std::shared_ptr<Anubis::Mesh3D> _mesh;
 		std::vector<std::shared_ptr<sf::Texture>> _splatTextures;	// [0] = weights of terrains 0-3, [1] = terrains 4-7
 
