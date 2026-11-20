@@ -5,6 +5,7 @@
 #include "Modules/Game/Map/CameraOnMap.hpp"
 #include "Modules/Game/Map/CursorOnMap.hpp"
 #include "Modules/Game/Map/PlacedGameObjects.hpp"
+#include "Objects/Player.hpp"
 
 
 namespace Game {
@@ -16,6 +17,7 @@ namespace Game {
 		std::shared_ptr<PlacedGameObjects> _game_objects;
 		std::shared_ptr<CameraOnMap> _camera;
 		std::shared_ptr<CursorOnMap> _cursor_on_map;
+		std::shared_ptr<Player> _player;
 
 		Module();
 		~Module();
@@ -25,6 +27,7 @@ namespace Game {
 		void createGameObjects();
 		void createCamera();
 		void createCursorOnMap();
+		void createPlayer();
 		void setVisibleChunks();
 
 		void cursorHover();

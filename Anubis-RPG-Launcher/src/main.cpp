@@ -127,7 +127,8 @@ int main() {
     Game::module->createGameObjects();
     Game::module->createCamera();
     Game::module->createCursorOnMap();
-    
+    Game::module->createPlayer();
+
     // cursor
     Anubis::cursor = std::make_shared<Anubis::Cursor>();
     Anubis::cursor->setScene(Game::module->_scene);
@@ -151,6 +152,7 @@ int main() {
                 Game::module->_map->loadFromProject(file, loader);
                 Game::module->_game_objects->loadFromProject(file, loader);
                 loader->end();
+                Game::module->createPlayer();
                 Game::module->setVisibleChunks();
             }
 

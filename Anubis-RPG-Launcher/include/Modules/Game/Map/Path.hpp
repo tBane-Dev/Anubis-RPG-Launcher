@@ -1,3 +1,4 @@
+#pragma once
 #include "RenderWindow.hpp"
 #include "SFML/Graphics.hpp"
 #include "Modules/Game/Map/Map.hpp"

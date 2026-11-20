@@ -20,19 +20,25 @@ std::wstring ObjectTypeToWString(ObjectType type) {
 			return L"Monster";
 		case ObjectType::Nature:
 			return L"Nature";
+		case ObjectType::Player:
+			return L"Player";
 		default:
 			return L"Unknown";
 	};
 }
 
 ObjectType WStringToObjectType(std::wstring type) {
+
 	if (type == L"Terrain")
 		return ObjectType::Terrain;
 	else if (type == L"Monster")
 		return ObjectType::Monster;
 	else if (type == L"Nature")
 		return ObjectType::Nature;
-	
+	else if (type == L"Player")
+		return ObjectType::Player;
 	else
 		return ObjectType::None;
+
+
 }

@@ -41,10 +41,6 @@ namespace Game {
 		_map->create(width, height);
 	}
 
-	void Module::createCursorOnMap() {
-		_cursor_on_map = std::make_shared<CursorOnMap>();
-	}
-
 	void Module::createGameObjects() {
 		_game_objects = std::make_shared<PlacedGameObjects>();
 	}
@@ -55,6 +51,15 @@ namespace Game {
 
 		_camera->_position = sf::Vector2f((float)(_map->getRect().size.x / 2), (float)(_map->getRect().size.y / 2));
 		_camera->update();
+	}
+
+	void Module::createCursorOnMap() {
+		_cursor_on_map = std::make_shared<CursorOnMap>();
+	}
+	
+	void Module::createPlayer() {
+		_player = std::make_shared<Player>(Anubis::prefabs_manager->getPrefab(L"dziobak"));
+		_game_objects->addGameObject(_player);
 	}
 
 	void Module::setVisibleChunks() {

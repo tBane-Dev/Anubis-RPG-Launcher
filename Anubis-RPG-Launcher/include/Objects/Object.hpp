@@ -2,7 +2,7 @@
 #include <SFML/Graphics.hpp>
 
 enum class ObjectType { 
-	None, Terrain, Monster, Nature
+	None, Terrain, Monster, Nature, Player
 };
 
 class Object {
