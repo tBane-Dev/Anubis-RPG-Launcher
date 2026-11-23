@@ -12,6 +12,7 @@ namespace Game {
 		std::vector<std::uint8_t> _fill;		// from the Fill tool of the editor
 		std::vector<std::uint8_t> _added;		// painted with the water brush
 		std::vector<std::uint8_t> _removed;		// painted with the eraser
+		std::vector<std::uint8_t> _shore;		// distance to the shore / 2 (0 - 255 = 0 - 510 world units), for the foam
 		std::shared_ptr<sf::Texture> _maskTexture;
 		std::shared_ptr<Anubis::Mesh3D> _mesh;
 
@@ -44,6 +45,8 @@ namespace Game {
 		Water(int kind, float level);
 		~Water();
 
+		std::shared_ptr<WaterChunk> getWaterChunk(sf::Vector2i coords);
+		void updateShoreDistances();
 		void updateChunk(std::shared_ptr<WaterChunk> waterChunk);
 		void updateAllChunks();
 
