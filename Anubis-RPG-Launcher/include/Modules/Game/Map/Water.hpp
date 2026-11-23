@@ -50,6 +50,8 @@ namespace Game {
 		void updateChunk(std::shared_ptr<WaterChunk> waterChunk);
 		void updateAllChunks();
 
+		float getDistance(sf::Vector2f position, sf::Vector2f& nearest);
+
 		WaterState getState();
 		void setState(WaterState state);
 

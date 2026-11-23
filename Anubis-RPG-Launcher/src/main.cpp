@@ -21,6 +21,7 @@
 #include "Cursor.hpp"
 #include "ModulesManager.hpp"
 #include "Modules/Game/Module.hpp"
+#include "SoundsManager.hpp"
 
 #include <windows.h>
 #include <commdlg.h>
@@ -116,6 +117,7 @@ int main() {
     Cursors::cursor = std::make_shared<Cursors::Cursor>();
     Anubis::GUI_manager = std::make_shared<Anubis::GUIManager>();
     Main::modules_manager = std::make_shared<Main::ModulesManager>();
+    Anubis::sounds_manager = std::make_shared<Anubis::SoundsManager>();
 
     Anubis::renderIntro();
 
@@ -149,6 +151,7 @@ int main() {
                 std::shared_ptr<Anubis::Loader> loader = std::make_shared<Anubis::Loader>(file);
                 Anubis::models_manager->loadFromProject(file, loader);
                 Anubis::prefabs_manager->loadFromProject(file, loader);
+                Anubis::sounds_manager->clear();
                 Game::module->_map->loadFromProject(file, loader);
                 Game::module->_game_objects->loadFromProject(file, loader);
                 loader->end();
@@ -223,6 +226,7 @@ int main() {
 
         // update
         Main::modules_manager->update();
+        Anubis::sounds_manager->update();
 
         // draw
         Anubis::render_window->clear(sf::Color(47, 47, 47));

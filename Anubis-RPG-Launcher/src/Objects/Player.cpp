@@ -7,6 +7,7 @@
 #include "ShadersManager.hpp"
 #include "Objects/Monster.hpp" // TO-DO - to remove
 
+
 Player::Player(std::weak_ptr<GameObject> prefab) : PlacedGameObject(prefab) {
 
 	_type = ObjectType::Player;
@@ -120,6 +121,7 @@ void Player::update() {
 		};
 		
 		_model->_position.x = _position.x;
+		_model->_position.y = Game::module->_map->getHeight(_position.x, _position.y);
 		_model->_position.z = _position.y;
 	}
 }

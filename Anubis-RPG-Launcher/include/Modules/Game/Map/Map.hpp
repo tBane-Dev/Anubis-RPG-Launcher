@@ -5,6 +5,7 @@
 #include "Modules/Game/Map/Water.hpp"
 #include "Loader.hpp"
 #include <fstream>
+#include "SoundsManager.hpp"
 
 namespace Game {
 	class Map : public Anubis::Element {
@@ -15,11 +16,18 @@ namespace Game {
 		std::vector<std::shared_ptr<Water>> _waters;
 		std::vector<std::shared_ptr<Chunk>> _visibleChunks;
 
+		std::shared_ptr<sf::Sound> _oceanAmbience;					// loop sound of the ocean, stands on the nearest point of the ocean
+		int _waveIndex;												// the next wave to play
+		int _waveCycle;												// the cycle of the wave in the shader when the last wave was played
+		sf::Time _waterSoundsTime;
+		sf::Vector2f _oceanPoint;									// the nearest point of the ocean - the wave sound uses its phase
+
 		Map();
 		~Map();
 
 		void addChunk(std::shared_ptr<Chunk> chunk, int terrain);
 		void create(int width, int height);
+		void addSounds();
 
 		std::shared_ptr<Chunk> getChunkByCoords(int x, int y);
 		std::shared_ptr<Chunk> getChunkByTileGlobalCoords(int x, int y);
@@ -40,6 +48,7 @@ namespace Game {
 		float getHeight(float x, float z);
 
 		void drawWaters(sf::Glsl::Mat4 view, sf::Glsl::Mat4 projection);
+		float getDistanceToWater(sf::Vector2f position, int kind, sf::Vector2f& nearest);
 
 		void saveFromProject(std::ofstream& file);
 		void loadFromProject(std::ifstream& file, std::shared_ptr<Anubis::Loader>& loader);

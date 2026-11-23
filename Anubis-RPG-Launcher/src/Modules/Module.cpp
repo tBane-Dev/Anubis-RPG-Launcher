@@ -40,6 +40,7 @@ namespace Game {
 		_map = std::make_shared<Map>();
 
 		_map->create(width, height);
+		
 	}
 
 	void Module::createGameObjects() {
