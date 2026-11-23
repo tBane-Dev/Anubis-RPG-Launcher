@@ -15,6 +15,7 @@ PlacedGameObject::PlacedGameObject(std::weak_ptr<GameObject> prefab, bool play) 
 	}
 	else {
 		_type = _prefab.lock()->_type;
+		_model = std::make_shared<Anubis::Model3D>(*_prefab.lock()->_model.lock());
 	}
 
 	_position = sf::Vector2f(0.0f, 0.0f);

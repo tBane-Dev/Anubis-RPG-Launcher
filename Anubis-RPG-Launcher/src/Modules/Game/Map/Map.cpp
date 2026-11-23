@@ -636,9 +636,6 @@ namespace Game {
 		Anubis::GL::bindVertexArray(0);
 		sf::Shader::bind(nullptr);
 
-		// waters after the terrain - they use its depth (shore line)
-		drawWaters(sf::Glsl::Mat4(viewMatrix), sf::Glsl::Mat4(projectionMatrix));
-
 		glBindTexture(GL_TEXTURE_2D, 0);
 
 		Anubis::GL::activeTexture(0x84C1); // GL_TEXTURE1

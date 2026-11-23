@@ -5,6 +5,7 @@
 #include "Modules/Game/Module.hpp"
 #include "DebugLog.hpp"
 #include "ShadersManager.hpp"
+#include "Objects/Monster.hpp" // TO-DO - to remove
 
 Player::Player(std::weak_ptr<GameObject> prefab) : PlacedGameObject(prefab) {
 
@@ -26,6 +27,8 @@ Player::~Player() {
 void Player::update() {
 
 	// update 
+	if (!_model) return;
+
 	_model->update();
 
 	if (_state == PlayerState::Moving) {
@@ -34,7 +37,7 @@ void Player::update() {
 		float moveSpeed = 32.0f;
 
 		if (!_model->_animations.empty()) {
-			float stepLength =  4.0f;
+			float stepLength = (float)std::dynamic_pointer_cast<MonsterPrefab>(_prefab.lock())->_stepSize / 4.0f;
 			float moveStep = 32.f / 2.0f / stepLength;
 			moveSpeed = moveStep / interval * 0.5f;
 			float duration = _model->_animations[0]._duration;
@@ -44,11 +47,25 @@ void Player::update() {
 			_model->_player._speed = duration / (4.0f * interval) * 0.5f;
 		}
 
-		if (sf::Mouse::isButtonPressed(sf::Mouse::Button::Left)) {
-			_path->setStartPoint(sf::Vector2i(_position));
-			sf::Vector2i endPoint = sf::Vector2i(sf::Mouse::getPosition());
-			_path->setEndPoint(endPoint);
-			_path->generatePath();
+		if (sf::Mouse::isButtonPressed(sf::Mouse::Button::Left) && Game::module->_cursor_on_map->_isOnTerrain) {
+
+			sf::Vector3f world = Game::module->_cursor_on_map->_worldPosition;
+
+			sf::Vector2i startPoint = sf::Vector2i(
+				(int)(std::round(_position.x / Game::Tile::tileSize) * Game::Tile::tileSize),
+				(int)(std::round(_position.y / Game::Tile::tileSize) * Game::Tile::tileSize)
+			);
+
+			sf::Vector2i endPoint = sf::Vector2i(
+				(int)(std::round(world.x / Game::Tile::tileSize) * Game::Tile::tileSize),
+				(int)(std::round(world.z / Game::Tile::tileSize) * Game::Tile::tileSize)
+			);
+
+			if (endPoint != _path->getEndPoint()) {
+				_path->setStartPoint(startPoint);
+				_path->setEndPoint(endPoint);
+				_path->generatePath();
+			}
 		}
 
 		float distance = moveSpeed * Anubis::deltaTime.asSeconds();

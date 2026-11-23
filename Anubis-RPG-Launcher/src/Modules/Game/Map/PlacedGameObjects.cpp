@@ -327,7 +327,6 @@ namespace Game {
 				nature->setPosition(sf::Vector2f(reader.read_Vector2i()));
 				
 				if (prefab) {
-					nature->_model = std::make_shared<Anubis::Model3D>(*prefab->_model.lock());
 					nature->_model->_position.x = nature->getPosition().x;
 					nature->_model->_position.y = 0;
 					nature->_model->_position.z = nature->getPosition().y;
@@ -346,7 +345,6 @@ namespace Game {
 				monster->setPosition(sf::Vector2f(reader.read_Vector2i()));
 
 				if (prefab) {
-					monster->_model = std::make_shared<Anubis::Model3D>(*prefab->_model.lock());
 					monster->_model->_position.x = monster->getPosition().x;
 					monster->_model->_position.y = 0;
 					monster->_model->_position.z = monster->getPosition().y;
